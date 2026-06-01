@@ -59,4 +59,6 @@ Drop a photo named exactly `hero.jpg` into the same folder as `index.html`.
 | Success message | Search for `success-heading` |
 redeploy test
 ikk
+ez kuze
+
 
