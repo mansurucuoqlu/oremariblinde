@@ -41,7 +41,7 @@ Drop a photo named exactly `hero.jpg` into the same folder as `index.html`.
 2. Fill out the quote form completely
 3. Click **Send My Quote Request**
 4. Check that the success message appears: *"Thanks, [Name]! Your quote request is in."*
-5. Check your inbox at **info@oremari.limo** — Web3Forms sends the submission there
+5. Check the inbox you registered with Web3Forms — submissions go there
 
 > **Important:** Web3Forms requires an internet connection even for local testing because it hits their API. The form won't work if you're offline.
 
@@ -53,7 +53,7 @@ Drop a photo named exactly `hero.jpg` into the same folder as `index.html`.
 |---|---|
 | Phone number | Search for `+19204006406` and `(920) 400-6406` |
 | Email address | Search for `info@oremari.limo` |
-| Web3Forms key | Search for `2eeea415` |
+| Web3Forms key | Search for `f57bc0b5` |
 | Business name | Search for `OREMARI LIMO` |
 | Tagline | Hero section — "Premium Bay Area limo service" |
 | Success message | Search for `success-heading` |
