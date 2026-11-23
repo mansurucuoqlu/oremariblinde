@@ -182,29 +182,9 @@
 
       <!-- Phone -->
       <div class="field">
-        <label class="lbl" for="f-phone">Phone Number</label>
+        <label class="lbl" for="f-phone">Phone Number <span style="color:#E57373;">*</span></label>
         <input type="tel" id="f-phone" name="phone" placeholder="(555) 000-0000" inputmode="numeric" autocomplete="tel" />
         <p class="err" id="e-phone">Enter a valid phone number</p>
-      </div>
-
-      <!-- Email -->
-      <div class="field" style="margin-bottom:6px;">
-        <label class="lbl" for="f-email">Email Address</label>
-        <input type="email" id="f-email" name="email" placeholder="you@example.com" autocomplete="email" />
-        <p class="err" id="e-email">Enter a valid email address</p>
-      </div>
-      <p style="font-size:12px; color:#6B6B6B; margin-bottom:20px;">Phone or email — whichever is easier for you</p>
-      <p class="err on" id="e-contact" style="display:none; margin-top:-14px; margin-bottom:14px;">We need either a phone or email to reach you</p>
-
-      <!-- Service Type -->
-      <div class="field">
-        <label class="lbl">Service Type <span style="color:#E57373;">*</span></label>
-        <div class="pill-group">
-          <label class="pill"><input type="radio" name="service_type" value="Airport Transfer" />&#9992;&#65039; Airport Transfer</label>
-          <label class="pill"><input type="radio" name="service_type" value="Wine Tour" />&#127863; Wine Tour</label>
-          <label class="pill"><input type="radio" name="service_type" value="Personal Chauffeur" />&#127913; Personal Chauffeur</label>
-        </div>
-        <p class="err" id="e-service">Please select a service type</p>
       </div>
 
       <!-- Pickup Location -->
@@ -224,48 +204,17 @@
         <div>
           <label class="lbl" for="f-time">Pickup Time <span style="color:#E57373;">*</span></label>
           <input type="time" id="f-time" name="pickup_time" />
-          <p class="err" id="e-time">Pickup time has already passed</p>
-        </div>
-      </div>
-
-      <!-- Drop-off (optional) -->
-      <div class="field">
-        <label class="lbl" for="f-dropoff">Drop-off Location</label>
-        <input type="text" id="f-dropoff" name="dropoff_location" placeholder="Optional for hourly chauffeur service" />
-      </div>
-
-      <!-- Passengers & Vehicle -->
-      <div class="two-col field">
-        <div>
-          <label class="lbl" for="f-pax">Passengers</label>
-          <select id="f-pax" name="passengers"><option value="">Select</option></select>
-        </div>
-        <div>
-          <label class="lbl" for="f-vehicle">Vehicle Type</label>
-          <select id="f-vehicle" name="vehicle_type">
-            <option value="">Any</option>
-            <option>Sedan</option><option>SUV</option><option>Stretch Limo</option><option>Sprinter Van</option><option>Party Bus</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Trip Type -->
-      <div class="field">
-        <label class="lbl">Trip Type</label>
-        <div class="pill-group">
-          <label class="pill"><input type="radio" name="trip_type" value="One-Way" />One-Way</label>
-          <label class="pill"><input type="radio" name="trip_type" value="Round Trip" />Round Trip</label>
-          <label class="pill"><input type="radio" name="trip_type" value="Hourly" />Hourly</label>
+          <p class="err" id="e-time">Please choose a future pickup time</p>
         </div>
       </div>
 
       <!-- Notes -->
       <div class="field">
         <label class="lbl" for="f-notes">Special Requests</label>
-        <textarea id="f-notes" name="notes" placeholder="Any special requests, stops, or occasion details?"></textarea>
+        <textarea id="f-notes" name="notes" placeholder="Drop-off, passengers, stops, or occasion details (optional)"></textarea>
       </div>
 
-      <p class="err" id="e-submit" style="font-size:14px; margin-bottom:12px;">Something went wrong — please call (920) 400-6406 or try again</p>
+      <p class="err" id="e-submit" style="font-size:14px; margin-bottom:12px;">Something went wrong — please call (415) 636-0945 or try again</p>
       <button type="submit" id="submit-btn" class="btn btn-white" style="width:100%; font-size:16px; min-height:52px;">Send My Quote Request</button>
     </form>
   </div>
@@ -289,25 +238,12 @@
   // Year
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  // Populate passengers
-  const pax = document.getElementById('f-pax');
-  for (let i = 1; i <= 20; i++) { const o = document.createElement('option'); o.value = o.textContent = i; pax.appendChild(o); }
-
   // Set date min to today
   function todayStr() {
     const d = new Date();
     return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
   }
   document.getElementById('f-date').min = todayStr();
-
-  // Radio pill toggle
-  document.querySelectorAll('.pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      const name = pill.querySelector('input').name;
-      document.querySelectorAll(`.pill input[name="${name}"]`).forEach(r => r.closest('.pill').classList.remove('on'));
-      pill.classList.add('on');
-    });
-  });
 
   // Floating button — fade out when quote form is visible
   const floatEl = document.getElementById('float');
@@ -327,7 +263,6 @@
     document.querySelectorAll('.field-error').forEach(e => e.classList.remove('field-error'));
   }
   function validPhone(v) { return v.replace(/\D/g,'').length >= 10; }
-  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
@@ -336,20 +271,13 @@
 
     const name  = document.getElementById('f-name').value.trim();
     const phone = document.getElementById('f-phone').value.trim();
-    const email = document.getElementById('f-email').value.trim();
     const date  = document.getElementById('f-date').value;
     const time  = document.getElementById('f-time').value;
     const pickup = document.getElementById('f-pickup').value.trim();
-    const service = form.querySelector('input[name="service_type"]:checked');
     const today = todayStr();
 
     if (!name)    { err('e-name', true);    ferr('f-name', true);   ok = false; }
-    if (phone && !validPhone(phone)) { err('e-phone', true); ferr('f-phone', true); ok = false; }
-    if (email && !validEmail(email)) { err('e-email', true); ferr('f-email', true); ok = false; }
-    if (!phone && !email) {
-      err('e-contact', true); ferr('f-phone', true); ferr('f-email', true); ok = false;
-    }
-    if (!service) { err('e-service', true); ok = false; }
+    if (!validPhone(phone)) { err('e-phone', true); ferr('f-phone', true); ok = false; }
     if (!pickup)  { err('e-pickup', true);  ferr('f-pickup', true); ok = false; }
     if (!date || date < today) { err('e-date', true); ferr('f-date', true); ok = false; }
     if (!time) {
